@@ -1,0 +1,35 @@
+.formGroup {
+  margin-bottom: 15px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+  
+  .submitButton {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+.reserverbouton {
+  background-color: #007bff;
+  color: #fff;
+  padding: 30px 30px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  width: 300px;
+  height: 70px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+  
+  .submitButton:hover {
+    background-color: #0056b3;
+  }
+  
