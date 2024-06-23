@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.29.12",
+    "@clerk/nextjs": "^4.31.3",
     "@nestjs/common": "^10.3.9",
     "chart.js": "^4.4.3",
     "next": "14.1.4",
