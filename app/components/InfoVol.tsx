@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { constantes } from "./constante";
+import React, { useState, useEffect } from 'react';
 
 export default function InfoVol() {
   const [data, setData] = useState({
@@ -14,32 +15,6 @@ export default function InfoVol() {
     bagages: null,
     servicesExtra: null,
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const apiUrl = "https://api.example.com/vol";
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error("Erreur lors de la récupération des données");
-        }
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) return <p>Chargement...</p>;
-  if (error) return <p>Erreur : {error}</p>;
 
   return (
     <div className="border border-gray-500 relative p-2 rounded-md shadow-md mb-2">

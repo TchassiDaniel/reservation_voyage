@@ -1,24 +1,24 @@
 "use client";
-
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./booking.module.css";
+import { constantes } from "./constante";
 
 const BookingPage = () => {
   const [passengers, setPassengers] = useState([
     {
-      name: "",
+      nom: "",
       prenom: "",
       age: "",
       type: "",
       genre: "",
       idNumber: "",
-      poidsBagage: "",
-      nbreBagage: "",
-      prixBagage: "",
+      poidsBagage: 0,
+      nbreBagage: 0,
+      prixBagage: 0,
     },
   ]);
 
-  const handleInputChange = (index: number, field: string, value: any) => {
+  const handleInputChange = (index, field, value) => {
     const updatedPassengers = passengers.map((passenger, i) =>
       i === index ? { ...passenger, [field]: value } : passenger
     );
@@ -29,30 +29,30 @@ const BookingPage = () => {
     setPassengers([
       ...passengers,
       {
-        name: "",
+        nom: "",
         prenom: "",
         age: "",
         type: "",
         genre: "",
         idNumber: "",
-        poidsBagage: "",
-        nbreBagage: "",
-        prixBagage: "",
+        poidsBagage: 0,
+        nbreBagage: 0,
+        prixBagage: 0,
       },
     ]);
   };
 
-  const handleRemovePassenger = (index: number) => {
+  const handleRemovePassenger = (index) => {
     const updatedPassengers = passengers.filter((_, i) => i !== index);
     setPassengers(updatedPassengers);
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     for (const passenger of passengers) {
       if (
-        passenger.name.trim() === "" ||
+        passenger.nom.trim() === "" ||
         passenger.prenom.trim() === "" ||
         !passenger.age ||
         !passenger.idNumber
@@ -64,7 +64,84 @@ const BookingPage = () => {
       }
     }
 
-    // Submit the passengers' data
+    try {
+      // Create reservation
+      const reservation = {
+        dateReservation: new Date().toISOString(),
+        nbrePassager: passengers.length,
+        prixTotal: passengers.reduce((total, p) => total +p.prixBagage || 0, 0),
+        idUtilisateur: constantes.idUtilisateur, // Assurez-vous de définir idUtilisateur dans constantes
+        idVoyage: constantes.idVoyage,
+      };
+      
+      const reservationResponse = await fetch(`http://${constantes.hostbackend}/api/reservation`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reservation),
+      });
+
+      if (!reservationResponse.ok) {
+        throw new Error("Erreur lors de la création de la réservation");
+      }
+
+      const reservationData = await reservationResponse.json();
+      const idReservation = reservationData.value;//.idReservation;
+      console.log(idReservation);
+      // Create passengers and bags
+      for (const passenger of passengers) {
+        const passager = {
+          nom: passenger.nom,
+          prenom: passenger.prenom,
+          type: passenger.type,
+          genre: passenger.genre,
+          age: parseInt(passenger.age),
+          NumPieceIdentification: passenger.idNumber,
+          idReservation,
+        };
+
+        const passagerResponse = await fetch(`http://${constantes.hostbackend}/api/passager`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(passager),
+        });
+
+        if (!passagerResponse.ok) {
+          throw new Error("Erreur lors de la création du passager");
+        }
+
+        const passagerData = await passagerResponse.json();
+        const idPassager = passagerData.value;//idPassager;
+        console.log(idPassager);
+        // Create baggage
+        const bagage = {
+          nbreBagage: passenger.nbreBagage,
+          poids:passenger.poidsBagage,
+          prix: passenger.prixBagage,
+          idPassager,
+        };
+
+        const bagageResponse = await fetch(`http://${constantes.hostbackend}/api/bagage`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bagage),
+        });
+
+        if (!bagageResponse.ok) {
+          throw new Error("Erreur lors de la création des bagages");
+        }
+      }
+
+      alert("Réservation créée avec succès!");
+    } catch (error) {
+      console.error("Erreur:", error);
+      alert("Erreur lors de la création de la réservation et des passagers");
+    }
   };
 
   return (
@@ -97,9 +174,9 @@ const BookingPage = () => {
                 type="text"
                 id={`name-${index}`}
                 className={styles.inputStyle}
-                value={passenger.name}
+                value={passenger.nom}
                 onChange={(event) =>
-                  handleInputChange(index, "name", event.target.value)
+                  handleInputChange(index, "nom", event.target.value)
                 }
               />
             </div>
@@ -190,18 +267,45 @@ const BookingPage = () => {
               <label htmlFor={`poidsBagage-${index}`}>
                 <b>Poids des bagages: </b>
               </label>
-              <select
+              <input
+                type="text"
                 id={`poidsBagage-${index}`}
+                className="w-full pl-5 outline-none"
                 value={passenger.poidsBagage}
                 onChange={(event) =>
                   handleInputChange(index, "poidsBagage", event.target.value)
                 }
-              >
-                <option value="">Select Weight</option>
-                <option value="1-25kg">[1kg, 25kg]</option>
-                <option value="25-50kg">[25kg, 50kg]</option>
-                <option value="50-100kg">[50kg, 100kg]</option>
-              </select>
+              />
+            </div>
+            <br />
+            <div className={styles.formGroup}>
+              <label htmlFor={`nbreBagage-${index}`}>
+                <b>Nombre de bagages: </b>
+              </label>
+              <input
+                type="number"
+                id={`nbreBagage-${index}`}
+                className="w-full pl-5 outline-none"
+                value={passenger.nbreBagage}
+                onChange={(event) =>
+                  handleInputChange(index, "nbreBagage", event.target.value)
+                }
+              />
+            </div>
+            <br />
+            <div className={styles.formGroup}>
+              <label htmlFor={`prixBagage-${index}`}>
+                <b>Prix des bagages: </b>
+              </label>
+              <input
+                type="number"
+                id={`prixBagage-${index}`}
+                className="w-full pl-5 outline-none"
+                value={passenger.prixBagage}
+                onChange={(event) =>
+                  handleInputChange(index, "prixBagage", event.target.value)
+                }
+              />
             </div>
             <br />
             <button
