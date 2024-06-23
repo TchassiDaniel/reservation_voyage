@@ -31,7 +31,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, maxAge = 3600)
 public class PassagerControler {
     @Autowired
     PassagerService passagerService;

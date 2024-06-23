@@ -33,7 +33,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, maxAge = 3600)
 public class BagageController {
     @Autowired
     private BagageService bagageService;
