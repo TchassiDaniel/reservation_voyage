@@ -1,19 +1,29 @@
 .formGroup {
-  margin-bottom: 15px;
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #e2e8f0;
+  position: relative;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 0.5rem;
 }
-  
-  .submitButton {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+
+.inputStyle {
+  width: 100%;
+  padding-left: 1.25rem;
+  outline: none;
+}
+
+.submitButton {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .reserverbouton {
   background-color: #007bff;
   color: #fff;
@@ -28,8 +38,7 @@
   right: 20px;
   z-index: 9999;
 }
-  
-  .submitButton:hover {
-    background-color: #0056b3;
-  }
-  
+
+.submitButton:hover {
+  background-color: #0056b3;
+}

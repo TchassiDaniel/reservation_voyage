@@ -12,7 +12,9 @@ const BookingPage = () => {
       type: "",
       genre: "",
       idNumber: "",
-      baggage: "",
+      poidsBagage: "",
+      nbreBagage: "",
+      prixBagage: "",
     },
   ]);
 
@@ -33,7 +35,9 @@ const BookingPage = () => {
         type: "",
         genre: "",
         idNumber: "",
-        baggage: "",
+        poidsBagage: "",
+        nbreBagage: "",
+        prixBagage: "",
       },
     ]);
   };
@@ -82,7 +86,7 @@ const BookingPage = () => {
               <b>PASSAGER {index + 1}:</b>
             </h2>
             <br />
-            <div className="margin-bottom-15px;">
+            <div className={styles.formGroup}>
               <label
                 className="display-block margin-bottom-5px"
                 htmlFor={`name-${index}`}
@@ -92,6 +96,7 @@ const BookingPage = () => {
               <input
                 type="text"
                 id={`name-${index}`}
+                className={styles.inputStyle}
                 value={passenger.name}
                 onChange={(event) =>
                   handleInputChange(index, "name", event.target.value)
@@ -99,13 +104,14 @@ const BookingPage = () => {
               />
             </div>
             <br />
-            <div className="margin-bottom-15px">
+            <div className={styles.formGroup}>
               <label htmlFor={`prenom-${index}`}>
                 <b>Prenom(s): </b>
               </label>
               <input
                 type="text"
                 id={`prenom-${index}`}
+                className={styles.inputStyle}
                 value={passenger.prenom}
                 onChange={(event) =>
                   handleInputChange(index, "prenom", event.target.value)
@@ -162,7 +168,7 @@ const BookingPage = () => {
               </select>
             </div>
             <br />
-            <div className="margin-bottom-15px;">
+            <div className={styles.formGroup}>
               <label
                 className="display-block margin-bottom-5px"
                 htmlFor={`idNumber-${index}`}
@@ -172,6 +178,7 @@ const BookingPage = () => {
               <input
                 type="text"
                 id={`idNumber-${index}`}
+                className="w-full pl-5 outline-none"
                 value={passenger.idNumber}
                 onChange={(event) =>
                   handleInputChange(index, "idNumber", event.target.value)
@@ -180,14 +187,14 @@ const BookingPage = () => {
             </div>
             <br />
             <div className={styles.formGroup}>
-              <label htmlFor={`baggage-${index}`}>
+              <label htmlFor={`poidsBagage-${index}`}>
                 <b>Poids des bagages: </b>
               </label>
               <select
-                id={`baggage-${index}`}
-                value={passenger.baggage}
+                id={`poidsBagage-${index}`}
+                value={passenger.poidsBagage}
                 onChange={(event) =>
-                  handleInputChange(index, "baggage", event.target.value)
+                  handleInputChange(index, "poidsBagage", event.target.value)
                 }
               >
                 <option value="">Select Weight</option>
@@ -214,7 +221,9 @@ const BookingPage = () => {
         >
           Ajouter un passager
         </button>
-        <br />
+
+        <> </>
+
         <button type="submit" className={styles.submitButton}>
           Reserver
         </button>

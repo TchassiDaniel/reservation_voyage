@@ -15,8 +15,13 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background-color: rgb(138, 138, 202);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url("/world.jpg");
+  background-size: auto;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 @layer utilities {
@@ -26,5 +31,15 @@ body {
 }
 
 #header {
-  background-color: rgb(40, 110, 239);
+  background-color: rgb(255, 255, 255);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid #ddd;
+  border-radius: 10px;
 }

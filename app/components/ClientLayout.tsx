@@ -56,11 +56,17 @@ const ClientLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div>
-      <Header onNavClick={handleNavClick} />
+      <div id="header">
+        <Header onNavClick={handleNavClick} />
+      </div>
       <main className="p-6">
         {currentView === "reservation" && children}
         {currentView === "historique" && <Historique />}
-        {currentView === "statistiques" && <Statistics />}
+        {currentView === "statistiques" && (
+          <div className="container">
+            <Statistics />
+          </div>
+        )}
       </main>
     </div>
   );
