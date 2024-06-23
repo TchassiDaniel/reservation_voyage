@@ -1,6 +1,7 @@
 package com.reservation.reservation_voyage.models;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
@@ -19,16 +20,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Vehicule {
     @PrimaryKey
-    private int numeroChassis;
+    private UUID idVehicule; // Auto-increment [PK]
 
-    private short speedBox;
-    private String categorie;
-    private String photo;
-    private int capacite;
-    private int tempsRevision;
-    private Date miseCirculation;
-    private int prixRevision;
-    private int prixConso;
-    private EtatVehicule etat;
+    private String marque;
+    private String modele;
+    private Date anneeFabrication;
+    private int nombrePlace;
+    private double poidsBagage; // en kg
+    private double vitesse; // en km/h
     private String immatriculation;
+    private EtatVehicule disponible;
+
 }

@@ -1,6 +1,5 @@
 package com.reservation.reservation_voyage.models;
 
-import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
@@ -16,18 +15,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Conducteur {
+public class Utilisateur{
+    
     @PrimaryKey
-    private UUID code;
+    private UUID idUtilisateur; // Auto-increment [PK]
 
-    private String photos;
     private String nom;
     private String prenom;
+    private String pseudo;
+    private String email;
+    private String motDePasse;
     private String adresse;
-    private short etat;
-    private short speedBox;
-    private String categorie;
-    private int volumeHoraire;
-    private int salaireHeure;
-
+    private String telephone;
+    
 }

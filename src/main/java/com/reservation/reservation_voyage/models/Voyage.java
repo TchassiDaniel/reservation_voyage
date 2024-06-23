@@ -1,9 +1,15 @@
 package com.reservation.reservation_voyage.models;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
+import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
+
+import com.reservation.reservation_voyage.enumeration.ClasseVoyage;
+import com.reservation.reservation_voyage.enumeration.StatutVoyage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,21 +23,23 @@ import lombok.Setter;
 @Setter
 public class Voyage {
     @PrimaryKey
-    private int idVoyage;
+    private UUID idVoyage; // Auto-increment [PK]
 
-    private int idCond;
+    private Date dateDepartPrevue; //Heure et Date
+    private Date dateDepartEffective; //Heure et Date
+    private Date dateArriveePrevue; //Heure et Date
+    private Date dateArriveeEffective; //Heure et Date
 
-    private int idVeh;
+    private double duree; // durée en minute
+    private double prix;
+    private String lieuDepart;
+    private String lieuArrivee;
+    private ClasseVoyage classeVoyage;
 
-    private double duree;
+    private int nombrePlaceConfirme;
+    private int nombrePlaceReserve;
 
-    private Date dateHeureDepart;
+    private StatutVoyage statut;
 
-    private String destination;
 
-    private String villeDepart;
-
-    private int prixPeage;
-
-    private int prixBillet;
 }

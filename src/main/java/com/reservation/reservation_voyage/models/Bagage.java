@@ -1,5 +1,7 @@
 package com.reservation.reservation_voyage.models;
 
+import java.util.UUID;
+
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -13,13 +15,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Client{
-    
+public class Bagage {
     @PrimaryKey
-    private int idClient; // Identifiant unique
-    private String nom;
-    private String prenom;
-    private String adresse;
-    private String email;
-    private String telephone;
+    
+    private UUID idBagage; // Auto-increment [PK]
+    
+    private int nbreBagage;
+    private double poids; // en kg
+    private double prix;
+    private UUID idPassager; // Foreign key [FK]
+
 }

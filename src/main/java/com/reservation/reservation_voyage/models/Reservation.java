@@ -1,8 +1,10 @@
 package com.reservation.reservation_voyage.models;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -21,8 +23,14 @@ import lombok.Setter;
 public class Reservation {
     
     @PrimaryKey
-    private int idReservation;
+    private UUID idReservation; // Auto-increment [PK]
 
-    private Date dateReserbation;
-    private StatutReservation statut;
+    private Date dateReservation;
+    private int nbrePassager;
+    private double prixTotal;
+    private StatutReservation statutReservation;
+
+    private UUID idUtilisateur; // Foreign key [FK]
+    private UUID idVoyage; // Foreign key [FK]
+    
 }
