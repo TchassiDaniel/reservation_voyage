@@ -3,7 +3,7 @@ import { FaMapPin } from "react-icons/fa";
 export default function SearchForm() {
   return (
     <>
-      <h1 className="font-bold mb-2 text-lg text-center text-black-400">
+      <h1 className="font-bold mb-2 text-lg text-center text-blue-400">
         Trajet
       </h1>
       <label className="font-bold mb-2 text-sm text-black-400">Départ</label>

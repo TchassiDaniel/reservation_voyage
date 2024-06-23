@@ -69,7 +69,7 @@ const BookingPage = () => {
 
   return (
     <div className="width-50% margin-0-auto padding-20px">
-      <h1 className="text-align-center text-lg margin-bottom-40px height-50px">
+      <h1 className="text-align-center text-lg margin-bottom-40px height-50px text-blue-400">
         <b>Qui voyage ?</b>
       </h1>
       <br />
