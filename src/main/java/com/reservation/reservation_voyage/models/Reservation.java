@@ -29,6 +29,7 @@ public class Reservation {
     private int nbrePassager;
     private double prixTotal;
     private StatutReservation statutReservation;
+    private Long timerDate;
 
     private UUID idUtilisateur; // Foreign key [FK]
     private UUID idVoyage; // Foreign key [FK]

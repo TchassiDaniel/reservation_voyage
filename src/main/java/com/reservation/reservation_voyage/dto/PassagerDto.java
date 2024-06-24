@@ -20,7 +20,7 @@ public class PassagerDto {
     private TypePassager type;
     private GenrePassager genre;
     private int age;
-    private String NumPieceIdentification;
+    private String numPieceIdentification;
 
     private UUID idReservation; // Foreign key [FK]
 }

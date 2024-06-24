@@ -1,5 +1,8 @@
 package com.reservation.reservation_voyage.services;
 
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,21 +65,25 @@ public class ReservationService {
                         apiError.setText("Les données sont incomplètes ou incorrectes");
                     }
                     else{
+                        Voyage voyage= this.voyageRepository.findById(reservationdto.getIdVoyage()).orElse(null);
+
+                        //On enregistre la reservation
+
                         Reservation reservation = new Reservation();
                         reservation.setIdReservation(UUID.randomUUID());
-                        reservation.setDateReservation(reservationdto.getDateReservation());
+                        reservation.setDateReservation(new Date()   );//date actuelle
                         reservation.setNbrePassager(reservationdto.getNbrePassager());
                         reservation.setPrixTotal(reservationdto.getPrixTotal());
                         reservation.setStatutReservation(StatutReservation.EN_ATTENTE_DE_CONFIRMATION);
                         reservation.setIdUtilisateur(reservationdto.getIdUtilisateur());
                         reservation.setIdVoyage(reservationdto.getIdVoyage());
+                        reservation.setTimerDate(voyage.getDateArriveePrevue().getTime()/1000 - 3600*48 - (new Date()).getTime()/1000);
                         this.reservationRepository.save(reservation);
 
                         //On met a jour le nombre de place restante
                         voyageUtiliseVehicule.setNbrePlaceRestante(voyageUtiliseVehicule.getNbrePlaceRestante() - reservationdto.getNbrePassager());
                         this.voyageUtiliseVehiculeRepository.save(voyageUtiliseVehicule);
                         //On met à jour le nombre de place reservée
-                        Voyage voyage= this.voyageRepository.findById(reservationdto.getIdVoyage()).orElse(null);
                         voyage.setNombrePlaceReserve(voyage.getNombrePlaceReserve() + reservationdto.getNbrePassager());
                         this.voyageRepository.save(voyage);
                         apiError.setValue(reservation.getIdReservation().toString());

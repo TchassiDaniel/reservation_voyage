@@ -18,7 +18,8 @@ public class ReservationVoyageApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/greeting-javaconfig").allowedOrigins("http://192.168.221.117:3000");
+				registry.addMapping("/**")
+				.allowedOrigins("http://localhost:3000");
 			}
 		};
 	}

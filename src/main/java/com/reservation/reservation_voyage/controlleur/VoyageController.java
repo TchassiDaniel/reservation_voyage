@@ -27,6 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+//@CrossOrigin(origins = "http://localhost:3000")
 public class VoyageController {
     @Autowired
     private VoyageService voyageService;
