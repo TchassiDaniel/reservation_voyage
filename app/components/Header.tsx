@@ -18,7 +18,7 @@ export default function Header({ onNavClick }: HeaderProps) {
   return (
     <header className="background-color-white flex items-center justify-between py-3 px-6">
       <div className="flex items-center gap-3">
-        <Image className="cursor-pointer" src={Logo} alt="Logo" width={60} />
+        <Image className="cursor-pointer" src={Logo} alt="Logo" width={70} />
         <ul className="hidden md:flex items-center gap-4">
           <li
             className={`font-bold cursor-pointer ${
