@@ -1,10 +1,8 @@
 package com.reservation.reservation_voyage.models;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 

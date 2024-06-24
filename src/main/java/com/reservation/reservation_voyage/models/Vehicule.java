@@ -29,6 +29,7 @@ public class Vehicule {
     private double poidsBagage; // en kg
     private double vitesse; // en km/h
     private String immatriculation;
+    private String lienPhoto;
     private EtatVehicule disponible;
 
 }

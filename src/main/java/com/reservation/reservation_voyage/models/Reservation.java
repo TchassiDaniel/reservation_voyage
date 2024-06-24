@@ -3,8 +3,6 @@ package com.reservation.reservation_voyage.models;
 import java.util.Date;
 import java.util.UUID;
 
-import org.springframework.context.annotation.Primary;
-import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 

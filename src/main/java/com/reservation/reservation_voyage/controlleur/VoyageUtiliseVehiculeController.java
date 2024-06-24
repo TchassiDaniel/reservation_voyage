@@ -1,11 +1,9 @@
 package com.reservation.reservation_voyage.controlleur;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.reservation.reservation_voyage.repository.VoyageUtiliseVehiculeRepository;
 import com.reservation.reservation_voyage.services.VoyageUtiliseVehiculeService;
 
 import lombok.AllArgsConstructor;

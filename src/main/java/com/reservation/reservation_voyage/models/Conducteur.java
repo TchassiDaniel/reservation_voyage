@@ -1,6 +1,5 @@
 package com.reservation.reservation_voyage.models;
 
-import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
@@ -20,14 +19,12 @@ public class Conducteur {
     @PrimaryKey
     private UUID code;
 
-    private String photos;
     private String nom;
     private String prenom;
     private String adresse;
-    private short etat;
-    private short speedBox;
     private String categorie;
-    private int volumeHoraire;
-    private int salaireHeure;
+    private String telephone;
+    private String email;
+    private String lienPhoto;
 
 }

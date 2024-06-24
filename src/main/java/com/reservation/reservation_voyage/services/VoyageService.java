@@ -12,7 +12,6 @@ import com.reservation.reservation_voyage.dto.PlaceVoyageDto;
 import com.reservation.reservation_voyage.enumeration.StatutReservation;
 import com.reservation.reservation_voyage.models.Passager;
 import com.reservation.reservation_voyage.models.Reservation;
-import com.reservation.reservation_voyage.models.Vehicule;
 import com.reservation.reservation_voyage.models.Voyage;
 import com.reservation.reservation_voyage.models.VoyageUtiliseVehicule;
 import com.reservation.reservation_voyage.repository.PassagerRepository;
