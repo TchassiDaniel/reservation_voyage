@@ -289,7 +289,7 @@ const BookingPage = () => {
               <br />
               <div className={styles.formGroup}>
                 <label htmlFor={`poidsBagage-${index}`}>
-                  <b>Poids des bagages: </b>
+                  <b>Poids des bagages(Kg): </b>
                 </label>
                 <input
                   type="text"
@@ -334,19 +334,20 @@ const BookingPage = () => {
           >
             Ajouter un passager
           </button>
-          <br />
+          <> </>
           <button type="submit" className={styles.submitButton}>
             Reserver
           </button>
         </form>
       </div>
-      <div className="width-50% padding-20px">
-        <h2>Résumé</h2>
-        <p><b>Nombre total de passagers:</b> {passengers.length}</p>
-        <p><b>Nombre total de bagages:</b> {passengers.reduce((total, passenger) => total + passenger.nbreBagage, 0)}</p>
-        <p><b>Prix total du vol:</b> {flightPrice*passengers.length}</p>
-        <p><b>Prix total des bagages:</b> {calculateTotalBaggagePrice()}</p>
+      <div className="w-1/2 p-5">
+        <h2 className="text-lg font-bold mb-4">Résumé</h2>
+        <p className="mb-2"><b>Nombre total de passagers :</b> {passengers.length}</p>
+        <p className="mb-2"><b>Nombre total de bagages :</b> {passengers.reduce((total, passenger) => total + passenger.nbreBagage, 0)}</p>
+        <p className="mb-2"><b>Prix total du vol :</b> {flightPrice * passengers.length} F CFA</p>
+        <p className="mb-2"><b>Prix total des bagages :</b> {calculateTotalBaggagePrice()} F CFA</p>
       </div>
+
     </div>
   );
 };

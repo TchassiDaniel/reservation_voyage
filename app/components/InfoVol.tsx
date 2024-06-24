@@ -8,13 +8,13 @@ export default function InfoVol() {
     marque: null,
     modele: null,
     nombrePlaceTotale: null,
-    nombrePlaceRestante: null,
     prixFinal: null,
     reductionFidelite: null,
     nombrePassagers: null,
     bagages: null,
     servicesExtra: null,
   });
+  const [nombrePlaceRestante, setNombrePlaceRestante] = useState("Non spécifié")
 
   useEffect(() => {
     const fetchVehicule = async () => {
@@ -46,13 +46,24 @@ export default function InfoVol() {
           nombrePassagers: voyageData.data.nombrePassagers,
           bagages: voyageData.bagages,
           servicesExtra: voyageData.servicesExtra,
-          nombrePlaceRestante: parseInt(data.nombrePlaceTotale) - parseInt(voyageData.data.nombrePlaceConfirme) - parseInt(voyageData.data.nombrePlaceReserve),
+          //nombrePlaceRestante: parseInt(data.nombrePlaceTotale) - parseInt(voyageData.data.nombrePlaceConfirme) - parseInt(voyageData.data.nombrePlaceReserve),
         }));
       } catch (error) {
         console.error("Erreur lors de la récupération des données du voyage:", error);
       }
     };
 
+    const fetchPlaceRestante = async () => {
+      try {
+        const response = await fetch(`http://${constantes.hostbackend}/api/voyage/place/${constantes.idVoyage}`);
+        const place = await response.json();
+        console.log(place);
+        setNombrePlaceRestante(place.data.nbrePlaceRestante);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données du véhicule:", error);
+      }
+    };
+    fetchPlaceRestante();
     fetchVehicule();
     fetchVoyage();
   }, []);
@@ -69,7 +80,7 @@ export default function InfoVol() {
         <p><b>Marque :</b> {data.marque ?? "Non spécifié"}</p>
         <p><b>Modèle :</b> {data.modele ?? "Non spécifié"}</p>
         <p><b>Nombre de places totales :</b> {data.nombrePlaceTotale ?? "Non spécifié"}</p>
-        <p><b>Nombre de places restantes :</b> {data.nombrePlaceRestante ?? "Non spécifié"}</p>
+        <p><b>Nombre de places restantes :</b> {nombrePlaceRestante ?? "Non spécifié"}</p>
         <p>---------------------------------------------------------------------------------</p>
         <p><b>Prix du vol :</b> {data.prixFinal ?? "Non spécifié"} F CFA</p>
         {/*<p><b>Réduction fidélité :</b> {data.reductionFidelite ?? "Non spécifié"} F CFA</p>
