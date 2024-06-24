@@ -27,7 +27,8 @@ export default function Home() {
           <InfoVol />
         </div>
       </div>
-      <div className="container">
+
+      <div className="container1">
         <BookingPage />
       </div>
 

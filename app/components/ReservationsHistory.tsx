@@ -122,18 +122,25 @@ const ReservationsHistory = () => {
   const handleSaveChanges = async () => {
     try {
       const response = await fetch(
-        `http://${constantes.hostbackend}/api/reservation/${selectedReservation.idReservation}`,
+        `http://${constantes.hostbackend}/api/reservation/updatePassengers/${selectedReservation.idReservation}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...selectedReservation, passengers }),
+          body: JSON.stringify({ passengers }),
         }
       );
 
       if (response.ok) {
         alert("Réservation mise à jour avec succès!");
+        setReservations((prevReservations) =>
+          prevReservations.map((reservation) =>
+            reservation.idReservation === selectedReservation.idReservation
+              ? { ...reservation, details: passengers }
+              : reservation
+          )
+        );
         setSelectedReservation(null);
         setEditing(false);
       } else {
@@ -230,16 +237,70 @@ const ReservationsHistory = () => {
                         <b>PASSAGER {index + 1}</b>
                       </h2>
                       <div className="flex flex-col space-y-2">
-                        <label htmlFor={`name-${index}`}>
+                        <label htmlFor={`nom-${index}`}>
                           <b>Nom de famille:</b>
                         </label>
                         <input
                           type="text"
-                          id={`name-${index}`}
+                          id={`nom-${index}`}
                           className="p-2 border border-gray-300 rounded-md"
                           value={passenger.nom}
                           onChange={(event) =>
                             handleInputChange(index, "nom", event.target.value)
+                          }
+                          required
+                        />
+                        <label htmlFor={`prenom-${index}`}>
+                          <b>Prénom:</b>
+                        </label>
+                        <input
+                          type="text"
+                          id={`prenom-${index}`}
+                          className="p-2 border border-gray-300 rounded-md"
+                          value={passenger.prenom}
+                          onChange={(event) =>
+                            handleInputChange(
+                              index,
+                              "prenom",
+                              event.target.value
+                            )
+                          }
+                          required
+                        />
+                        <label htmlFor={`type-${index}`}>
+                          <b>Type:</b>
+                        </label>
+                        <select
+                          id={`type-${selectedPassengerIndex}`}
+                          className={styles.inputStyle}
+                          value={passengers[selectedPassengerIndex].type}
+                          onChange={(event) =>
+                            handleInputChange(
+                              selectedPassengerIndex,
+                              "type",
+                              event.target.value
+                            )
+                          }
+                        >
+                          <option value="">Select Type</option>
+                          <option value="Adulte">Adulte</option>
+                          <option value="Enfant">Enfant</option>
+                          <option value="Bébé">Handicapé</option>
+                        </select>
+                        <label htmlFor={`genre-${index}`}>
+                          <b>Genre:</b>
+                        </label>
+                        <input
+                          type="text"
+                          id={`genre-${index}`}
+                          className="p-2 border border-gray-300 rounded-md"
+                          value={passenger.genre}
+                          onChange={(event) =>
+                            handleInputChange(
+                              index,
+                              "genre",
+                              event.target.value
+                            )
                           }
                           required
                         />
@@ -252,14 +313,14 @@ const ReservationsHistory = () => {
                     onClick={handleSaveChanges}
                     className="px-4 py-2 bg-blue-500 text-white rounded-md"
                   >
-                    Save Changes
+                    Enregistrer les modifications
                   </button>
                   <button
                     type="button"
                     onClick={() => setEditing(false)}
                     className="px-4 py-2 bg-red-500 text-white rounded-md"
                   >
-                    Cancel
+                    Annuler
                   </button>
                 </form>
               ) : (
@@ -275,7 +336,7 @@ const ReservationsHistory = () => {
                     onClick={() => setEditing(true)}
                     className="px-4 py-2 bg-blue-500 text-white rounded-md"
                   >
-                    Edit Passengers
+                    Modifier les passagers
                   </button>
                 </ul>
               )}
