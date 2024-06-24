@@ -257,7 +257,7 @@ const BookingPage = () => {
                   <option value="">Select Type</option>
                   <option value="Adulte">Adulte</option>
                   <option value="Enfant">Enfant</option>
-                  <option value="Bébé">Handicapé</option>
+                  <option value="handicapé">Handicapé</option>
                 </select>
               </div>
               <div className={styles.formGroup}>
@@ -273,7 +273,7 @@ const BookingPage = () => {
                   <option value="">Select Genre</option>
                   <option value="Homme">Homme</option>
                   <option value="Femme">Femme</option>
-                  <option value="Autre">Autre</option>
+                  
                 </select>
               </div>
               <div className={styles.formGroup}>

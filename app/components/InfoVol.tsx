@@ -1,6 +1,8 @@
 "use client";
 import { constantes } from "./constante";
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+
 
 export default function InfoVol() {
   const [data, setData] = useState({
@@ -82,7 +84,7 @@ export default function InfoVol() {
         <p><b>Nombre de places totales :</b> {data.nombrePlaceTotale ?? "Non spécifié"}</p>
         <p><b>Nombre de places restantes :</b> {nombrePlaceRestante ?? "Non spécifié"}</p>
         <p>---------------------------------------------------------------------------------</p>
-        <p><b>Prix du vol :</b> {data.prixFinal ?? "Non spécifié"} F CFA</p>
+        <p><b>Prix du voyage :</b> {data.prixFinal ?? "Non spécifié"} F CFA</p>
         {/*<p><b>Réduction fidélité :</b> {data.reductionFidelite ?? "Non spécifié"} F CFA</p>
         <p>------------------------------------------------------------------------------------------------------------------</p>
         <p><b>Nombre de passagers :</b> {data.nombrePassagers ?? "Non spécifié"}</p>
@@ -90,6 +92,41 @@ export default function InfoVol() {
         <p><b>Services extra choisis :</b> {data.servicesExtra ?? "Non spécifié"}</p>
         */}
       </div>
+      {/* New Div for Bus Photo */}
+      <div className="flex justify-center items-center mt-4">
+      <Image
+        src="/bus.jpg" // Chemin vers votre image dans le dossier public
+        alt="Description de l'image"
+        width={150} // Largeur de l'image
+        height={100} // Hauteur de l'image
+      />
+
+        </div>
+
+        {/* New Div for Driver Information */}
+        <div className="mt-4 p-4 border border-gray-300 rounded-md">
+          <h3 className="text-center text-lg mb-2 text-blue-400">
+            <b>Informations sur le conducteur</b>
+          </h3>
+          <div className="flex justify-center mb-2">
+              <Image
+                src="/conducteur.jpg" // Chemin vers votre image dans le dossier public
+                alt="Description de l'image"
+                width={150} // Largeur de l'image
+                height={100} // Hauteur de l'image
+          />
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="mb-2">
+              <span className="font-bold">Nom du conducteur : </span>
+              <span>Don_Pk</span>
+            </div>
+            <div>
+              <span className="font-bold">Numéro de téléphone : </span>
+              <span>+237 6 77 96 17 17</span>
+            </div>
+          </div>
+        </div>
     </div>
   );
 }
