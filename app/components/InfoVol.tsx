@@ -16,6 +16,47 @@ export default function InfoVol() {
     servicesExtra: null,
   });
 
+  useEffect(() => {
+    const fetchVehicule = async () => {
+      try {
+        const response = await fetch(`http://${constantes.hostbackend}/api/vehicule/${constantes.idVehicule}`);
+        const vehiculeData = await response.json();
+        console.log(vehiculeData);
+        setData(prevData => ({
+          ...prevData,
+          vehicule: vehiculeData.data.marque + ' ' + vehiculeData.data.modele,
+          marque: vehiculeData.data.marque,
+          modele: vehiculeData.data.modele,
+          nombrePlaceTotale: vehiculeData.data.nombrePlace,
+        }));
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données du véhicule:", error);
+      }
+    };
+
+    const fetchVoyage = async () => {
+      try {
+        const response = await fetch(`http://${constantes.hostbackend}/api/voyage/${constantes.idVoyage}`);
+        const voyageData = await response.json();
+        console.log(voyageData);
+        setData(prevData => ({
+          ...prevData,
+          prixFinal: voyageData.data.prix,
+          reductionFidelite: voyageData.data.reductionFidelite,
+          nombrePassagers: voyageData.data.nombrePassagers,
+          bagages: voyageData.bagages,
+          servicesExtra: voyageData.servicesExtra,
+          nombrePlaceRestante: parseInt(data.nombrePlaceTotale) - parseInt(voyageData.data.nombrePlaceConfirme) - parseInt(voyageData.data.nombrePlaceReserve),
+        }));
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données du voyage:", error);
+      }
+    };
+
+    fetchVehicule();
+    fetchVoyage();
+  }, []);
+
   return (
     <div className="border border-gray-500 relative p-2 rounded-md shadow-md mb-2">
       <h1 className="font-bold mb-2 text-lg text-center text-black-400">
@@ -23,52 +64,25 @@ export default function InfoVol() {
       </h1>
 
       <div>
-        <p>
-          ----------------------------------------------------------------------------------------------------------
-        </p>
-        <p>
-          <b>Vehicule :</b> {data.vehicule ?? "Non spécifié"}
-        </p>
-        <p>
-          <b>Marque :</b> {data.marque ?? "Non spécifié"}
-        </p>
-        <p>
-          <b>Modele :</b> {data.modele ?? "Non spécifié"}
-        </p>
-        <p>
-          <b>Nombre de place totale :</b>{" "}
-          {data.nombrePlaceTotale ?? "Non spécifié"}
-        </p>
-        <p>
-          <b>Nombre de place restante :</b>{" "}
-          {data.nombrePlaceRestante ?? "Non spécifié"}
-        </p>
-        <p>
-          ----------------------------------------------------------------------------------------------------------
-        </p>
-        <p>
-          <b>Prix final du vol :</b> {data.prixFinal ?? "Non spécifié"} €
-        </p>
-        <p>
-          <b>Réduction fidelite :</b> {data.reductionFidelite ?? "Non spécifié"}{" "}
-          €
-        </p>
-        <p>
-          ------------------------------------------------------------------------------------------------------------------
-        </p>
-        <p>
-          <b>Nombre de passagers :</b> {data.nombrePassagers ?? "Non spécifié"}
-        </p>
-        <p>
-          <b>Bagages :</b> {data.bagages ?? "Non spécifié"}
-        </p>
-        <p>
-          <b>Services extra choisis :</b> {data.servicesExtra ?? "Non spécifié"}
-        </p>
+        <p>----------------------------------------------------------------------------------</p>
+        <p><b>Véhicule :</b> {data.vehicule ?? "Non spécifié"}</p>
+        <p><b>Marque :</b> {data.marque ?? "Non spécifié"}</p>
+        <p><b>Modèle :</b> {data.modele ?? "Non spécifié"}</p>
+        <p><b>Nombre de places totales :</b> {data.nombrePlaceTotale ?? "Non spécifié"}</p>
+        <p><b>Nombre de places restantes :</b> {data.nombrePlaceRestante ?? "Non spécifié"}</p>
+        <p>---------------------------------------------------------------------------------</p>
+        <p><b>Prix du vol :</b> {data.prixFinal ?? "Non spécifié"} F CFA</p>
+        {/*<p><b>Réduction fidélité :</b> {data.reductionFidelite ?? "Non spécifié"} F CFA</p>
+        <p>------------------------------------------------------------------------------------------------------------------</p>
+        <p><b>Nombre de passagers :</b> {data.nombrePassagers ?? "Non spécifié"}</p>
+        <p><b>Bagages :</b> {data.bagages ?? "Non spécifié"}</p>
+        <p><b>Services extra choisis :</b> {data.servicesExtra ?? "Non spécifié"}</p>
+        */}
       </div>
     </div>
   );
 }
+
 
 {
   /*"use client";
@@ -152,7 +166,7 @@ export default function InfoVol() {
           <b>Durée :</b> {data.duree ?? "Non spécifié"} minutes
         </p>
         <p>
-          <b>Prix :</b> {data.prix ?? "Non spécifié"} €
+          <b>Prix :</b> {data.prix ?? "Non spécifié"} F CFA
         </p>
         <p>
           <b>Lieu de Départ :</b> {data.lieuDepart ?? "Non spécifié"}
