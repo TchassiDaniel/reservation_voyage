@@ -234,7 +234,7 @@ const BookingPage = () => {
   const checkAvailableSeats = (nbrePassager) => {
     if (nbrePassager > placeDisponible) {
         setMessage({
-          message: `Il n'y a que ${availableSeats} places disponibles. Veuillez ajuster le nombre total de passagers.`,
+          message: `Il n'y a que ${placeDisponible} places disponibles. Veuillez ajuster le nombre total de passagers.`,
           type: "info",
         });
         setShowModal(true);
