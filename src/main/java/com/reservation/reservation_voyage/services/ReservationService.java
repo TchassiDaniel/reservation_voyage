@@ -155,6 +155,10 @@ public class ReservationService {
         if(this.reservationRepository.findById(reservation.getIdReservation()).isEmpty() == true){
             apiError.setText("La reservation n'existe pas");
         }else{
+            Voyage voyage= this.voyageRepository.findById(reservation.getIdVoyage()).orElse(null);
+
+            reservation.setTimerDate(voyage.getDateArriveePrevue().getTime()/1000 - 3600*48 - (new Date()).getTime()/1000);
+
             this.reservationRepository.save(reservation);
             apiError.setText("La reservation a bien été modifié");
             

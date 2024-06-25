@@ -1,5 +1,6 @@
 package com.reservation.reservation_voyage.controlleur;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,6 +65,14 @@ public class PassagerControler {
     public ApiError updatePassager(@RequestBody Passager passager){
         ApiError apiError = new ApiError();
         this.passagerService.updatePassager(passager, apiError);
+        return apiError;
+    }
+
+    @DeleteMapping(path = "/{idPassager}")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiError deletePassager(@PathVariable UUID idPassager){
+        ApiError apiError = new ApiError();
+        this.passagerService.deletePassager(idPassager, apiError);
         return apiError;
     }
 }

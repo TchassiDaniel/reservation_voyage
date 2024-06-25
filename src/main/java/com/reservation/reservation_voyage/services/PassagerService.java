@@ -77,6 +77,14 @@ public void updatePassager(Passager passager, ApiError apiError) {
             apiError.setText("La mise à jour s'est bien dérouée");
         }
     }
+}
+public void deletePassager(UUID idPassager, ApiError apiError) {
+    if(this.passagerRepository.findById(idPassager).isEmpty() == true){
+        apiError.setText("Le passager n'existe pas");
+    }else{
+        this.passagerRepository.deleteById(idPassager);
+        apiError.setText("La suppression s'est bien dérouée");
+    }
 }    
     
 }
