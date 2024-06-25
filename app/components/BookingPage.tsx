@@ -6,6 +6,9 @@ import Alert from "./Alert";
 
 const BookingPage = () => {
   const [alert, setAlert] = useState(null);
+  //Fenetre d'erreur
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState({message:"", type:"info"});
 
   const showAlert = (message, type) => {
     setAlert({ message, type });
@@ -17,8 +20,15 @@ const BookingPage = () => {
 
   const [showPassengerForm, setShowPassengerForm] = useState(false);
 
-  const handleCloseAlert = () => {
-    setAlert(null);
+
+  
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   const [passengers, setPassengers] = useState([]);
@@ -71,6 +81,11 @@ const BookingPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const handleCloseAlert = () => {
+      // Logique de fermeture de l'alerte
+      console.log("Alerte fermée !");
+    };
+
     for (const passenger of passengers) {
       if (
         passenger.nom.trim() === "" ||
@@ -78,9 +93,9 @@ const BookingPage = () => {
         !passenger.age ||
         !passenger.idNumber
       ) {
-        alert(
-          "Please fill in all required fields (Name, Last Name, Age, ID Number) for all passengers."
-        );
+        message.message="Please fill in all required fields (Name, Last Name, Age, ID Number) for all passengers.";
+        message.type="info";         
+        openModal();
         return;
       }
     }
@@ -167,11 +182,16 @@ const BookingPage = () => {
           throw new Error("Erreur lors de la création des bagages");
         }
       }
-
-      alert("Réservation créée avec succès!");
+      setMessage({
+        message: "Reservation effectuée avec succes!",
+        type: "success",
+      })
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur lors de la création de la réservation et des passagers");
+      setMessage({
+        message: "Erreur lors de la création de la réservation et des passagers",
+        type: "error",
+      })
     }
   };
 
@@ -187,7 +207,10 @@ const BookingPage = () => {
       setFlightPrice(data.data.prix);
     } catch (error) {
       console.error("Erreur:", error);
-      alert("Erreur lors de la récupération du prix du vol");
+      setMessage({
+        message: "Erreur lors de la sélection du prix du vol",
+        type: "error",
+      })
     }
   };
 
@@ -269,9 +292,9 @@ const BookingPage = () => {
                   onChange={(event) => handleInputChange(selectedPassengerIndex, "type", event.target.value)}
                 >
                   <option value="">Select Type</option>
-                  <option value="Adulte">Adulte</option>
-                  <option value="Enfant">Enfant</option>
-                  <option value="handicapé">Handicapé</option>
+                  <option value="ADULTE">Adulte</option>
+                  <option value="ENFANT">Enfant</option>
+                  <option value="HANDICAPE">Handicapé</option>
                 </select>
               </div>
               <div className={styles.formGroup}>
@@ -285,9 +308,8 @@ const BookingPage = () => {
                   onChange={(event) => handleInputChange(selectedPassengerIndex, "genre", event.target.value)}
                 >
                   <option value="">Select Genre</option>
-                  <option value="Homme">Homme</option>
-                  <option value="Femme">Femme</option>
-                  
+                  <option value="HOMME">Homme</option>
+                  <option value="FEMME">Femme</option>
                 </select>
               </div>
               <div className={styles.formGroup}>
@@ -414,6 +436,13 @@ const BookingPage = () => {
           <b>Prix total des bagages :</b> {calculateTotalBaggagePrice()} F CFA
         </p>
       </div>
+      {showModal && (
+        <Alert
+          message={message.message}
+          type={message.type} // ou 'error', 'info'
+          onClose={closeModal}
+          />
+        )}
     </div>
   );
 };
