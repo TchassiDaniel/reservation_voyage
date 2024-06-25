@@ -13,7 +13,7 @@ const BookingPage = () => {
 
   const handleShowPassengerForm = () => {
     setShowPassengerForm(true);
-  }; 
+  };
 
   const [showPassengerForm, setShowPassengerForm] = useState(false);
 
@@ -62,7 +62,10 @@ const BookingPage = () => {
   };
 
   const calculateTotalBaggagePrice = () => {
-    return passengers.reduce((total, passenger) => total + passenger.nbreBagage * 1000, 0);
+    return passengers.reduce(
+      (total, passenger) => total + passenger.nbreBagage * 1000,
+      0
+    );
   };
 
   const handleSubmit = async (event) => {
@@ -92,13 +95,16 @@ const BookingPage = () => {
         idVoyage: constantes.idVoyage,
       };
       console.log(reservation);
-      const reservationResponse = await fetch(`http://${constantes.hostbackend}/api/reservation`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(reservation),
-      });
+      const reservationResponse = await fetch(
+        `http://${constantes.hostbackend}/api/reservation`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reservation),
+        }
+      );
 
       if (!reservationResponse.ok) {
         throw new Error("Erreur lors de la création de la réservation");
@@ -120,13 +126,16 @@ const BookingPage = () => {
           idReservation: idReservation,
         };
         console.log(passager);
-        const passagerResponse = await fetch(`http://${constantes.hostbackend}/api/passager`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(passager),
-        });
+        const passagerResponse = await fetch(
+          `http://${constantes.hostbackend}/api/passager`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(passager),
+          }
+        );
 
         if (!passagerResponse.ok) {
           throw new Error("Erreur lors de la création du passager");
@@ -143,13 +152,16 @@ const BookingPage = () => {
           idPassager,
         };
 
-        const bagageResponse = await fetch(`http://${constantes.hostbackend}/api/bagage`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bagage),
-        });
+        const bagageResponse = await fetch(
+          `http://${constantes.hostbackend}/api/bagage`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bagage),
+          }
+        );
 
         if (!bagageResponse.ok) {
           throw new Error("Erreur lors de la création des bagages");
@@ -165,7 +177,9 @@ const BookingPage = () => {
 
   const fetchFlightPrice = async () => {
     try {
-      const response = await fetch(`http://${constantes.hostbackend}/api/voyage/${constantes.idVoyage}`);
+      const response = await fetch(
+        `http://${constantes.hostbackend}/api/voyage/${constantes.idVoyage}`
+      );
       if (!response.ok) {
         throw new Error("Erreur lors de la récupération du prix du vol");
       }
@@ -315,22 +329,27 @@ const BookingPage = () => {
             </div>
           )}
 
-          <button
-            className="bg-green-500 text-white font-bold py-2 px-4 rounded my-2"
-            type="button"
-            onClick={handleAddPassenger}
-          >
-            Ajouter un passager
-          </button>
-          <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded my-2" type="submit">
-            Soumettre
-          </button>
-        </form>
+            <button
+              className="bg-green-500 text-white font-bold py-2 px-4 rounded my-2"
+              type="button"
+              onClick={handleAddPassenger}
+            >
+              Ajouter un passager
+            </button>
+            <button
+              className="bg-blue-500 text-white font-bold py-2 px-4 rounded my-2"
+              type="submit"
+            >
+              Soumettre
+            </button>
+          </form>
         )}
       </div>
 
       <div className="w-1/2 p-4">
-        <h2 className="text-lg text-center mb-4"><b>Liste des passagers</b></h2>
+        <h2 className="text-lg text-center mb-4">
+          <b>Liste des passagers</b>
+        </h2>
         <div className="overflow-y-auto" style={{ maxHeight: "500px" }}>
           <table className="w-full border-collapse">
             <thead>
@@ -343,7 +362,11 @@ const BookingPage = () => {
             </thead>
             <tbody>
               {passengers.map((passenger, index) => (
-                <tr key={index} className="cursor-pointer" onClick={() => handlePassengerSelect(index)}>
+                <tr
+                  key={index}
+                  className="cursor-pointer"
+                  onClick={() => handlePassengerSelect(index)}
+                >
                   <td className="border py-2 px-4">{passenger.nom}</td>
                   <td className="border py-2 px-4">{passenger.prenom}</td>
                   <td className="border py-2 px-4">{passenger.idNumber}</td>
@@ -363,28 +386,33 @@ const BookingPage = () => {
             </tbody>
           </table>
         </div>
-        {alert && <Alert message={alert.message} type={alert.type} onClose={handleCloseAlert} />}
+        {alert && (
+          <Alert
+            message={alert.message}
+            type={alert.type}
+            onClose={handleCloseAlert}
+          />
+        )}
       </div>
       <div className="p-5">
-  <h2 className="text-lg font-bold mb-4">Résumé</h2>
-  <p className="mb-2">
-    <b>Nombre total de passagers :</b> {passengers.length}
-  </p>
-  <p className="mb-2">
-    <b>Nombre total de bagages :</b>{" "}
-    {passengers.reduce(
-      (total, passenger) => total + passenger.nbreBagage,
-      0
-    )}
-  </p>
-  <p className="mb-2">
-    <b>Prix total du vol :</b> {flightPrice * passengers.length} F CFA
-  </p>
-  <p className="mb-2">
-    <b>Prix total des bagages :</b> {calculateTotalBaggagePrice()} F CFA
-  </p>
-</div>
-
+        <h2 className="text-lg font-bold mb-4">Résumé</h2>
+        <p className="mb-2">
+          <b>Nombre total de passagers :</b> {passengers.length}
+        </p>
+        <p className="mb-2">
+          <b>Nombre total de bagages :</b>{" "}
+          {passengers.reduce(
+            (total, passenger) => total + passenger.nbreBagage,
+            0
+          )}
+        </p>
+        <p className="mb-2">
+          <b>Prix total du vol :</b> {flightPrice * passengers.length} F CFA
+        </p>
+        <p className="mb-2">
+          <b>Prix total des bagages :</b> {calculateTotalBaggagePrice()} F CFA
+        </p>
+      </div>
     </div>
   );
 };
