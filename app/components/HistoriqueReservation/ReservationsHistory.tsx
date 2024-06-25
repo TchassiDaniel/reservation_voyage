@@ -7,6 +7,11 @@ import  "../Historique.module.css";
 const ReservationsHistory = () => {
   const [reservations, setReservations] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
+  const [reloadComponent, setReloadComponent] = useState(false);
+
+  const handleClickReload = () => {
+    setReloadComponent((prev) => !prev); // Inverse la valeur actuelle de reloadComponent
+  };
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -60,6 +65,7 @@ const ReservationsHistory = () => {
   };
 
   const handleCancel = (id) => {
+    handleClickReload();
     setReservations((prevReservations) =>
       prevReservations.map((reservation) => {
         if (reservation.idReservation === id) {
@@ -71,6 +77,7 @@ const ReservationsHistory = () => {
   };
 
   const handleRowClick = (reservation) => {
+    handleClickReload();
     setSelectedReservation(reservation);
   };
 
