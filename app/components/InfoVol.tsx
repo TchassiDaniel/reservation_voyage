@@ -107,7 +107,7 @@ export default function InfoVol() {
         <p><b>Marque :</b> {data.marque ?? "Non spécifié"}</p>
         <p><b>Modèle :</b> {data.modele ?? "Non spécifié"}</p>
         <p><b>Nombre de places totales :</b> {data.nombrePlaceTotale ?? "Non spécifié"}</p>
-        <p><b>Nombre de places restantes :</b> {nombrePlaceRestante ?? "Non spécifié"}</p>
+        <p><b>Nombre de places disponible :</b> {nombrePlaceRestante ?? "Non spécifié"}</p>
         <p>---------------------------------------------------------------------------------</p>
         <p><b>Prix du voyage :</b> {data.prixFinal ?? "Non spécifié"} F CFA</p>
         {/*<p><b>Réduction fidélité :</b> {data.reductionFidelite ?? "Non spécifié"} F CFA</p>

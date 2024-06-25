@@ -14,6 +14,13 @@ const BookingPage = () => {
   const [selectedPassengerIndex, setSelectedPassengerIndex] = useState(null);
   const [flightPrice, setFlightPrice] = useState(0);
   const [totalPassengers, setTotalPassengers] = useState(0);
+  const [placeDisponible, setPlaceDisponible] = useState(0);
+  const [reloadComponent, setReloadComponent] = useState(false);
+
+  const handleClickReload = () => {
+    setReloadComponent((prev) => !prev); // Inverse la valeur actuelle de reloadComponent
+  };
+  
 
   const handleShowPassengerForm = () => {
     if (totalPassengers <= 0) {
@@ -201,6 +208,7 @@ const BookingPage = () => {
       });
       setShowModal(true);
     }
+    handleClickReload();
   };
 
   const fetchFlightPrice = async () => {
@@ -223,7 +231,18 @@ const BookingPage = () => {
     }
   };
 
-  const checkAvailableSeats = async (nbrePassager) => {
+  const checkAvailableSeats = (nbrePassager) => {
+    if (nbrePassager > placeDisponible) {
+        setMessage({
+          message: `Il n'y a que ${availableSeats} places disponibles. Veuillez ajuster le nombre total de passagers.`,
+          type: "info",
+        });
+        setShowModal(true);
+        return;
+      }
+    setShowPassengerForm(true);
+  }
+  const getPlaceDisponible = async () => {
     try {
       const response = await fetch(
         `http://${constantes.hostbackend}/api/voyage/place/${constantes.idVoyage}`
@@ -233,15 +252,7 @@ const BookingPage = () => {
       }
       const data = await response.json();
       const availableSeats = data.data.nbrePlaceRestante;
-      if (nbrePassager > availableSeats) {
-        setMessage({
-          message: `Il n'y a que ${availableSeats} places disponibles. Veuillez ajuster le nombre total de passagers.`,
-          type: "info",
-        });
-        setShowModal(true);
-        return;
-      }
-      setShowPassengerForm(true);
+      setPlaceDisponible(availableSeats);
     } catch (error) {
       console.error("Erreur:", error);
       setMessage({
@@ -254,10 +265,12 @@ const BookingPage = () => {
 
   useEffect(() => {
     fetchFlightPrice();
-  }, []);
+    getPlaceDisponible();
+  }, [reloadComponent]);
 
   return (
     <div className="container mx-auto p-4">
+    <p><b>Nombre de places disponible :</b> {placeDisponible ?? "Non spécifié"}</p>
       <h1 className="text-2xl font-bold mb-4 text-center text-blue-400">
         <b>Réservation de Voyage</b>
       </h1>
@@ -265,6 +278,7 @@ const BookingPage = () => {
         <div className="md:w-1/2 p-4">
           <div className="mb-4">
             <label htmlFor="totalPassengers" className="block mb-2">
+
               <b>Nombre total de passagers:</b>
             </label>
             <input

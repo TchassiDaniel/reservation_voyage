@@ -4,6 +4,8 @@ import { constantes } from "../constante"; // Assurez-vous de définir et import
 const EditReservation = ({ passengers, reservationId, onSave, onCancel }) => {
   const [selectedPassenger, setSelectedPassenger] = useState(null);
   const [updatedPassengers, setUpdatedPassengers] = useState(passengers);
+  const [flightPrice, setFlightPrice] = useState(0);
+  const [toDelete, setToDelete] = useState([]);
 
   useEffect(() => {
     if (selectedPassenger !== null) {
@@ -14,34 +16,198 @@ const EditReservation = ({ passengers, reservationId, onSave, onCancel }) => {
   }, [selectedPassenger]);
 
   const handleInputChange = (index, field, value) => {
-    setUpdatedPassengers((prev) =>
-      prev.map((p, i) => (i === index ? { ...p, [field]: value } : p))
+    setUpdatedPassengers((prevPassengers) => {
+      const updatedPassengersCopy = [...prevPassengers];
+      const passengerToUpdate = { ...updatedPassengersCopy[index] };
+  
+      // Pour modifier les champs imbriqués comme 'bagages.nbreBagage' et 'bagages.poids'
+      if (field.startsWith('bagages.')) {
+        const bagagesField = field.split('.')[1]; // Extrait 'nbreBagage' ou 'poids'
+        passengerToUpdate.bagages = {
+          ...passengerToUpdate.bagages,
+          [bagagesField]: value,
+        };
+      } else {
+        // Pour les autres champs directement dans le passager
+        passengerToUpdate[field] = value;
+      }
+  
+      updatedPassengersCopy[index] = passengerToUpdate;
+      return updatedPassengersCopy;
+    });
+  };
+  
+  const deletePassager = async (passagerId) => {
+    console.log("passager to delete ",passagerId);
+    try {
+      const response = await fetch(`http://localhost:8080/api/passager/${passagerId}`, {
+        method: 'DELETE',
+        headers: {
+          // Vous pouvez ajouter des headers ici si nécessaire, comme les jetons d'authentification
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('La suppression de l\'utilisateur a échoué');
+      }
+  
+      console.log('Utilisateur supprimé avec succès');
+      // Traitez la suppression réussie si nécessaire
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+      // Gérez les erreurs, par exemple afficher une notification à l'utilisateur
+    }
+  };
+
+  {/*const handleDeletePassenger = (index) => {
+    //selectedPassenger == null ? calculateTotalBaggagePrice(): deletePassager(selectedPassenger.idPassager);
+    setToDelete([...toDelete, selectedPassenger.idPassager]);
+    setUpdatedPassengers((prev) => prev.filter((_, i) => i !== index));
+    setSelectedPassenger(null);
+  };*/}
+
+  const handleDeletePassenger = (index) => {
+    // Récupérer le passager à supprimer en utilisant l'index
+    const passengerToDelete = updatedPassengers[index];
+  
+    if (passengerToDelete) {
+      // Supprimer le passager de votre backend ou marquer à supprimer plus tard
+      deletePassager(passengerToDelete.idPassager); // Supprimez le passager par son ID dans votre backend
+      console.log("selected dsff",passengerToDelete);
+      // Mettre à jour la liste des passagers affichés en filtrant celui à supprimer
+      setUpdatedPassengers((prev) => prev.filter((_, i) => i !== index));
+    }
+  
+    // Réinitialiser le passager sélectionné à null
+    setSelectedPassenger(null);
+  };
+
+  const calculateTotalBaggagePrice = () => {
+    return updatedPassengers.reduce(
+      (total, passenger) => total + passenger.bagages.nbreBagage * 1000,
+      0
     );
   };
 
   const handleSaveChanges = async () => {
     try {
-      const response = await fetch(
-        `http://${constantes.hostbackend}/api/passager/update/${reservationId}`,
+      const totalBaggagePrice = calculateTotalBaggagePrice();
+      const reservation = {
+        dateReservation: new Date().toISOString(),
+        nbrePassager: updatedPassengers.length,
+        prixTotal: flightPrice * updatedPassengers.length + totalBaggagePrice,
+        idUtilisateur: constantes.idUtilisateur,
+        idVoyage: constantes.idVoyage,
+        idReservation: reservationId,
+        statutReservation: "EN_ATTENTE_DE_CONFIRMATION",
+        timerDate: 0
+      };
+      const reservationResponse = await fetch(
+        `http://${constantes.hostbackend}/api/reservation`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ passengers: updatedPassengers }),
+          body: JSON.stringify(reservation),
         }
       );
 
-      if (response.ok) {
-        alert("Réservation mise à jour avec succès!");
-        onSave();
-      } else {
-        alert("Erreur lors de la mise à jour de la réservation");
+      if (!reservationResponse.ok) {
+        throw new Error("Nous ne pouvons creer votre reservation !");
       }
+
+      const reservationData = await reservationResponse.json();
+      const idReservation = reservationData.value;
+      console.log(reservationData);
+      console.log("idreservation",reservationId);
+
+      for(const idPassager of toDelete){
+        deletePassager(idPassager);
+      }
+
+      for (const passenger of updatedPassengers) {
+        const passager = {
+          nom: passenger.nom,
+          prenom: passenger.prenom,
+          type: passenger.type,
+          genre: passenger.genre,
+          age: parseInt(passenger.age),
+          numPieceIdentification: passenger.numPieceIdentification,
+          idReservation: reservationId,
+          idPassager: passenger.idPassager
+        };
+        console.log(passager);
+        const passagerResponse = await fetch(
+          `http://${constantes.hostbackend}/api/passager`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(passager),
+          }
+        );
+
+        if (!passagerResponse.ok) {
+          throw new Error(`Nous ne pouvons ajouter le passager "${passenger.nom} ${passenger.prenom}"`);
+        }
+
+        const passagerData = await passagerResponse.json();
+        const idPassager = passagerData.value;
+        console.log("passenger", passager);
+        console.log("passenger", passagerData);
+
+        const bagage = {
+          nbreBagage: passenger.bagages.nbreBagage,
+          poids: passenger.bagages.poids,
+          prix: passenger.bagages.nbreBagage * 1000,
+          idPassager: passenger.idPassager,
+          idBagage: passenger.bagages.idBagage,
+        };
+        console.log("Le bagage",bagage);
+        const bagageResponse = await fetch(
+          `http://${constantes.hostbackend}/api/bagage`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bagage),
+          }
+        );
+
+        if (!bagageResponse.ok) {
+          throw new Error(`Nous ne pouvons ajouter les bagages du passager "${passenger.nom} ${passenger.prenom}"`);
+        }
+      }
+      alert("Réservation effectuée avec succès !");
     } catch (error) {
-      console.error("Erreur lors de la mise à jour de la réservation:", error);
+      console.error("Erreur:", error);
+      alert("Erreur lors de la création de la réservation et des passagers");
+    }
+    onSave();
+  };
+
+  const fetchFlightPrice = async () => {
+    try {
+      const response = await fetch(
+        `http://${constantes.hostbackend}/api/voyage/${constantes.idVoyage}`
+      );
+      if (!response.ok) {
+        throw new Error("Erreur lors de la récupération du prix du vol");
+      }
+      const data = await response.json();
+      setFlightPrice(data.data.prix);
+    } catch (error) {
+      console.error("Erreur:", error);
+      alert("Erreur lors de la sélection du prix du vol");
     }
   };
+
+  useEffect(() => {
+    fetchFlightPrice();
+  }, []);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -55,6 +221,7 @@ const EditReservation = ({ passengers, reservationId, onSave, onCancel }) => {
                   <th className="py-2 px-4">Nom complet</th>
                   <th className="py-2 px-4">Numéro de pièce</th>
                   <th className="py-2 px-4">Poids des bagages</th>
+                  <th className="py-2 px-4">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -65,8 +232,20 @@ const EditReservation = ({ passengers, reservationId, onSave, onCancel }) => {
                     className="cursor-pointer hover:bg-gray-100"
                   >
                     <td className="py-2 px-4">{passenger.nom} {passenger.prenom}</td>
-                    <td className="py-2 px-4">{passenger.numpieceIdentification}</td>
+                    <td className="py-2 px-4">{passenger.numPieceIdentification}</td>
                     <td className="py-2 px-4">{passenger.bagages.poids} kg</td>
+                    <td className="py-2 px-4">
+                      <button
+                        type="button"
+                        className="text-red-500 hover:text-red-700"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeletePassenger(index);
+                        }}
+                      >
+                        Supprimer
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -122,18 +301,18 @@ const EditReservation = ({ passengers, reservationId, onSave, onCancel }) => {
                       onChange={(event) => handleInputChange(selectedPassenger, "genre", event.target.value)}
                     >
                       <option value="">Sélectionner le genre</option>
-                      <option value="HOMME">HOMME</option>
-                      <option value="FEMME">FEMME</option>
+                      <option value="HOMME">Homme</option>
+                      <option value="FEMME">Femme</option>
                     </select>
                   </div>
                   <div className="flex flex-col space-y-2">
-                    <label htmlFor="numpieceIdentification"><b>Numéro de pièce d'identité:</b></label>
+                    <label htmlFor="numPieceIdentification"><b>Numéro de pièce d'identité:</b></label>
                     <input
                       type="text"
-                      id="numpieceIdentification"
+                      id="numPieceIdentification"
                       className="p-2 border border-gray-300 rounded-md"
-                      value={updatedPassengers[selectedPassenger].numpieceIdentification}
-                      onChange={(event) => handleInputChange(selectedPassenger, "numpieceIdentification", event.target.value)}
+                      value={updatedPassengers[selectedPassenger].numPieceIdentification}
+                      onChange={(event) => handleInputChange(selectedPassenger, "numPieceIdentification", event.target.value)}
                       required
                     />
                   </div>

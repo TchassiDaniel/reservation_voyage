@@ -7,6 +7,7 @@ const PassengerForm = ({
   selectedPassengerIndex,
 }) => {
   return (
+    
     <form>
       {selectedPassengerIndex !== null && (
         <div className="bg-gray-100 p-4 rounded-md mb-4">

@@ -6,5 +6,5 @@ export const constantes = {
   idConducteur: "0404384a-be8d-4675-9f36-1d6995a00c34 ",
   idVoyage: "36937107-e2c9-4ca2-9c02-16890466c9da",
   idUtilisateur: "64fb5a8d-06d8-4f88-938a-b8e3af2341a1",
-  hostbackend: "localhost:8080",
+  hostbackend: "192.168.221.67:8080",
 };

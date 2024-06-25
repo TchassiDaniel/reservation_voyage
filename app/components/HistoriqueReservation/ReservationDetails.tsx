@@ -6,42 +6,50 @@ const ReservationDetails = ({ reservation, onClose }) => {
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [passengers, setPassengers] = useState([]);
   const [editing, setEditing] = useState(false);
+  const [reloadComponent, setReloadComponent] = useState(false);
+
+
+  const fetchDetails = async () => {
+    setLoadingDetails(true);
+    try {
+      const response = await fetch(
+        `http://${constantes.hostbackend}/api/passager/allByReservation/${reservation.idReservation}`
+      );
+      const data = await response.json();
+      const passengersWithBags = await Promise.all(
+        data.data.map(async (passenger) => {
+          const bagResponse = await fetch(
+            `http://${constantes.hostbackend}/api/bagage/allByPassager/${passenger.idPassager}`
+          );
+          const bagData = await bagResponse.json();
+          return { ...passenger, bagages: bagData.data };
+        })
+      );
+      console.log(passengersWithBags);
+      setPassengers(passengersWithBags);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des détails:", error);
+    } finally {
+      setLoadingDetails(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchDetails = async () => {
-      setLoadingDetails(true);
-      try {
-        const response = await fetch(
-          `http://${constantes.hostbackend}/api/passager/allByReservation/${reservation.idReservation}`
-        );
-        const data = await response.json();
-        const passengersWithBags = await Promise.all(
-          data.data.map(async (passenger) => {
-            const bagResponse = await fetch(
-              `http://${constantes.hostbackend}/api/bagage/allByPassager/${passenger.idPassager}`
-            );
-            const bagData = await bagResponse.json();
-            return { ...passenger, bagages: bagData.data };
-          })
-        );
-        console.log(passengersWithBags);
-        setPassengers(passengersWithBags);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des détails:", error);
-      } finally {
-        setLoadingDetails(false);
-      }
-    };
-
     fetchDetails();
-  }, [reservation.idReservation]);
+  },[reloadComponent] );//[reservation.idReservation]
 
   const handleEdit = () => {
+    fetchDetails();
     setEditing(true);
+  };
+
+  const handleClickReload = () => {
+    setReloadComponent((prev) => !prev); // Inverse la valeur actuelle de reloadComponent
   };
 
   const handleSaveEdit = () => {
     setEditing(false);
+    handleClickReload();
     // Rafraîchir les détails si nécessaire après la modification
   };
 

@@ -1,10 +1,9 @@
-"use client";
+"use client"
 import { useState, useEffect } from "react";
 import { FaMapPin } from "react-icons/fa";
 import { constantes } from "./constante";
 
 export default function SearchForm() {
-  // Définir l'état initial des données de voyage
   const [voyageData, setVoyageData] = useState({
     idVoyage: null,
     dateDepartPrevue: null,
@@ -21,11 +20,9 @@ export default function SearchForm() {
     statut: null,
   });
 
-  // Définir l'état de chargement et d'erreur
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Utiliser useEffect pour récupérer les données de voyage
   useEffect(() => {
     const apiUrl = `http://${constantes.hostbackend}/api/voyage/${constantes.idVoyage}`;
 
@@ -47,11 +44,9 @@ export default function SearchForm() {
     fetchData();
   }, []);
 
-  // Afficher un message de chargement ou d'erreur si nécessaire
   if (loading) return <p>Chargement...</p>;
   if (error) return <p>Erreur : {error}</p>;
 
-  // Rendre le formulaire de recherche avec les données récupérées
   return (
     <>
       <h1 className="font-bold mb-2 text-lg text-center text-blue-400">
@@ -85,7 +80,7 @@ export default function SearchForm() {
         <input
           type="text"
           className="w-full pl-5 outline-none"
-          value={voyageData.dateDepartPrevue || '01 juin 2025'}
+          value={voyageData.dateDepartPrevue ? new Date(voyageData.dateDepartPrevue).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }) : ''}
         />
       </div>
       <label className="font-bold mb-2 text-sm text-black-400">
@@ -96,7 +91,7 @@ export default function SearchForm() {
         <input
           type="text"
           className="w-full pl-5 outline-none"
-          value={voyageData.dateDepartEffective ? new Date(voyageData.dateDepartEffective).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '12h00'}
+          value={voyageData.dateDepartEffective ? new Date(voyageData.dateDepartEffective).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : ''}
         />
       </div>
     </>
