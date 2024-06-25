@@ -65,6 +65,18 @@ public void getAllPassagerByReservation(UUID idReservation, ApiError apiError) {
         apiError.setData(this.passagerRepository.findByIdReservation(idReservation));
         apiError.setText("La recherche s'est bien dérouée");
     }
+}
+public void updatePassager(Passager passager, ApiError apiError) {
+    if(this.passagerRepository.findById(passager.getIdPassager()).isEmpty() == true){
+        apiError.setText("Le passager n'existe pas");
+    }else{
+        if(passager.getAge() <= 0 || passager.getGenre() == null || passager.getNom() == null || passager.getPrenom() == null || passager.getType() == null || passager.getNumPieceIdentification() == null){
+            apiError.setText("Les données sont incomplètes ou incorrectes");
+        }else{
+            this.passagerRepository.save(passager);
+            apiError.setText("La mise à jour s'est bien dérouée");
+        }
+    }
 }    
     
 }

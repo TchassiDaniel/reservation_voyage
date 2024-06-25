@@ -3,6 +3,7 @@ package com.reservation.reservation_voyage.controlleur;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 
 import com.reservation.reservation_voyage.dto.ApiError;
 import com.reservation.reservation_voyage.dto.PassagerDto;
+import com.reservation.reservation_voyage.models.Passager;
 import com.reservation.reservation_voyage.services.PassagerService;
 
 import lombok.AllArgsConstructor;
@@ -54,6 +56,14 @@ public class PassagerControler {
     public ApiError getAllPassagerByReservation(@PathVariable UUID idReservation){
         ApiError apiError = new ApiError();
         this.passagerService.getAllPassagerByReservation(idReservation, apiError);
+        return apiError;
+    }
+
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ApiError updatePassager(@RequestBody Passager passager){
+        ApiError apiError = new ApiError();
+        this.passagerService.updatePassager(passager, apiError);
         return apiError;
     }
 }

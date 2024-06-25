@@ -155,8 +155,9 @@ public class ReservationService {
         if(this.reservationRepository.findById(reservation.getIdReservation()).isEmpty() == true){
             apiError.setText("La reservation n'existe pas");
         }else{
-            apiError.setData(this.reservationRepository.findById(reservation.getIdReservation()));
-            apiError.setText("La reservation");
+            this.reservationRepository.save(reservation);
+            apiError.setText("La reservation a bien été modifié");
+            
         }
     }
 }

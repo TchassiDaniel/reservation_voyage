@@ -58,8 +58,20 @@ public class BagageService {
         if(this.passagerRepository.findById(idPassager).isEmpty() == true){
             apiError.setText("Le passager n'existe pas");
         }else{
-            apiError.setData(this.bagageRepository.findByIdPassager(idPassager));
+            apiError.setData(this.bagageRepository.findByIdPassager(idPassager).get(0));
             apiError.setText("La recherche s'est bien dérouée");
+        }
+    }
+    public void updateBagage(Bagage bagage, ApiError apiError) {
+        if(this.bagageRepository.findById(bagage.getIdBagage()).isEmpty() == true){
+            apiError.setText("Le bagage n'existe pas");
+        }else{
+            if(bagage.getPoids() < 0 || bagage.getPrix() < 0 || bagage.getNbreBagage() < 0){
+                apiError.setText("Les données sont incomplètes");
+            }else{
+                this.bagageRepository.save(bagage);
+                apiError.setText("La mise à jour s'est bien dérouée");
+            }
         }
     }
     
