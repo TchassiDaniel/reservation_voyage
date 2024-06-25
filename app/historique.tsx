@@ -1,4 +1,4 @@
-import ReservationsHistory from "./components/ReservationsHistory";
+import ReservationsHistory from "./components/HistoriqueReservation/ReservationsHistory";
 
 const HistoriquePage = () => {
   return (
