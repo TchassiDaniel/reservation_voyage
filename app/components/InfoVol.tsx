@@ -2,6 +2,7 @@
 import { constantes } from "./constante";
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { BsTelephone } from "react-icons/bs";
 
 
 export default function InfoVol() {
@@ -15,8 +16,18 @@ export default function InfoVol() {
     nombrePassagers: null,
     bagages: null,
     servicesExtra: null,
+    photoVehicule: null,
   });
-  const [nombrePlaceRestante, setNombrePlaceRestante] = useState("Non spécifié")
+  const [nombrePlaceRestante, setNombrePlaceRestante] = useState("Non spécifié");
+  const [conducteur, setConducteur] = useState({
+    nom : null,
+    prenom : null,
+    telephone : null,
+    email : null,
+    categorie : null,
+    lienPhoto : null,
+    adresse : null,
+  });
 
   useEffect(() => {
     const fetchVehicule = async () => {
@@ -30,6 +41,7 @@ export default function InfoVol() {
           marque: vehiculeData.data.marque,
           modele: vehiculeData.data.modele,
           nombrePlaceTotale: vehiculeData.data.nombrePlace,
+          photoVehicule: vehiculeData.data.lienPhoto,
         }));
       } catch (error) {
         console.error("Erreur lors de la récupération des données du véhicule:", error);
@@ -55,6 +67,18 @@ export default function InfoVol() {
       }
     };
 
+    const fetchConducteur = async () => {
+      try {
+        const response = await fetch(`http://${constantes.hostbackend}/api/conducteur/${constantes.idConducteur}`);
+        const conducteurData = await response.json();
+        console.log(conducteurData);
+        setConducteur(conducteurData.data);
+        console.log("Le conducteur",conducteur);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données du véhicule:", error);
+      }
+    };
+
     const fetchPlaceRestante = async () => {
       try {
         const response = await fetch(`http://${constantes.hostbackend}/api/voyage/place/${constantes.idVoyage}`);
@@ -67,6 +91,7 @@ export default function InfoVol() {
     };
     fetchPlaceRestante();
     fetchVehicule();
+    fetchConducteur();
     fetchVoyage();
   }, []);
 
@@ -118,12 +143,12 @@ export default function InfoVol() {
           </div>
           <div className="flex flex-col items-center">
             <div className="mb-2">
-              <span className="font-bold">Nom du conducteur : </span>
-              <span>Don_Pk</span>
+             {/* <span className="font-bold">Nom du conducteur : </span>*/}
+              <span>{conducteur.nom} {conducteur.prenom}</span>
             </div>
             <div>
-              <span className="font-bold">Numéro de téléphone : </span>
-              <span>+237 6 77 96 17 17</span>
+              <span className="font-bold">Tel: </span>
+              <span>{conducteur.telephone}</span>
             </div>
           </div>
         </div>

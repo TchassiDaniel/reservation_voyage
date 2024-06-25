@@ -241,115 +241,191 @@ const BookingPage = () => {
           </button>
         </div>
         {showPassengerForm && (
-        <form className="flex flex-col" onSubmit={handleSubmit}>
-          {selectedPassengerIndex !== null && (
-            <div className={`border border-gray-500 p-4 rounded-md shadow-md mb-4`}>
-              <h2><b>PASSAGER {selectedPassengerIndex + 1}:</b></h2>
-              <div className={styles.formGroup}>
-                <label className="block mb-2" htmlFor={`name-${selectedPassengerIndex}`}>
-                  <b>Nom de famille: </b>
-                </label>
-                <input
-                  type="text"
-                  id={`name-${selectedPassengerIndex}`}
-                  className={styles.inputStyle}
-                  value={passengers[selectedPassengerIndex].nom}
-                  onChange={(event) => handleInputChange(selectedPassengerIndex, "nom", event.target.value)}
-                />
+          <form className="flex flex-col" onSubmit={handleSubmit}>
+            {selectedPassengerIndex !== null && (
+              <div
+                className={`border border-gray-500 p-4 rounded-md shadow-md mb-4`}
+              >
+                <h2>
+                  <b>PASSAGER {selectedPassengerIndex + 1}:</b>
+                </h2>
+                <div className={styles.formGroup}>
+                  <label
+                    className="block mb-2"
+                    htmlFor={`name-${selectedPassengerIndex}`}
+                  >
+                    <b>Nom de famille: </b>
+                  </label>
+                  <input
+                    type="text"
+                    id={`name-${selectedPassengerIndex}`}
+                    className={styles.inputStyle}
+                    value={passengers[selectedPassengerIndex].nom}
+                    onChange={(event) =>
+                      handleInputChange(
+                        selectedPassengerIndex,
+                        "nom",
+                        event.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label
+                    className="block mb-2"
+                    htmlFor={`prenom-${selectedPassengerIndex}`}
+                  >
+                    <b>Prénom(s): </b>
+                  </label>
+                  <input
+                    type="text"
+                    id={`prenom-${selectedPassengerIndex}`}
+                    className={styles.inputStyle}
+                    value={passengers[selectedPassengerIndex].prenom}
+                    onChange={(event) =>
+                      handleInputChange(
+                        selectedPassengerIndex,
+                        "prenom",
+                        event.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label
+                    className="block mb-2"
+                    htmlFor={`age-${selectedPassengerIndex}`}
+                  >
+                    <b>Age: </b>
+                  </label>
+                  <input
+                    type="number"
+                    id={`age-${selectedPassengerIndex}`}
+                    className={styles.inputStyle}
+                    value={passengers[selectedPassengerIndex].age}
+                    onChange={(event) =>
+                      handleInputChange(
+                        selectedPassengerIndex,
+                        "age",
+                        event.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label
+                    className="block mb-2"
+                    htmlFor={`type-${selectedPassengerIndex}`}
+                  >
+                    <b>Type: </b>
+                  </label>
+                  <select
+                    id={`type-${selectedPassengerIndex}`}
+                    className={styles.inputStyle}
+                    value={passengers[selectedPassengerIndex].type}
+                    onChange={(event) =>
+                      handleInputChange(
+                        selectedPassengerIndex,
+                        "type",
+                        event.target.value
+                      )
+                    }
+                  >
+                    <option value="">Select Type</option>
+                    <option value="ADULTE">Adulte</option>
+                    <option value="ENFANT">Enfant</option>
+                    <option value="HANDICAPE">Handicapé</option>
+                  </select>
+                </div>
+                <div className={styles.formGroup}>
+                  <label
+                    className="block mb-2"
+                    htmlFor={`genre-${selectedPassengerIndex}`}
+                  >
+                    <b>Genre: </b>
+                  </label>
+                  <select
+                    id={`genre-${selectedPassengerIndex}`}
+                    className={styles.inputStyle}
+                    value={passengers[selectedPassengerIndex].genre}
+                    onChange={(event) =>
+                      handleInputChange(
+                        selectedPassengerIndex,
+                        "genre",
+                        event.target.value
+                      )
+                    }
+                  >
+                    <option value="">Select Genre</option>
+                    <option value="HOMME">Homme</option>
+                    <option value="FEMME">Femme</option>
+                  </select>
+                </div>
+                <div className={styles.formGroup}>
+                  <label
+                    className="block mb-2"
+                    htmlFor={`idNumber-${selectedPassengerIndex}`}
+                  >
+                    <b>Numéro d'identification: </b>
+                  </label>
+                  <input
+                    type="text"
+                    id={`idNumber-${selectedPassengerIndex}`}
+                    className={styles.inputStyle}
+                    value={passengers[selectedPassengerIndex].idNumber}
+                    onChange={(event) =>
+                      handleInputChange(
+                        selectedPassengerIndex,
+                        "idNumber",
+                        event.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label
+                    className="block mb-2"
+                    htmlFor={`nbreBagage-${selectedPassengerIndex}`}
+                  >
+                    <b>Nombre de bagages: </b>
+                  </label>
+                  <input
+                    type="number"
+                    id={`nbreBagage-${selectedPassengerIndex}`}
+                    className={styles.inputStyle}
+                    value={passengers[selectedPassengerIndex].nbreBagage}
+                    onChange={(event) =>
+                      handleInputChange(
+                        selectedPassengerIndex,
+                        "nbreBagage",
+                        event.target.value
+                      )
+                    }
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label
+                    className="block mb-2"
+                    htmlFor={`poidsBagage-${selectedPassengerIndex}`}
+                  >
+                    <b>Poids des bagages (kg): </b>
+                  </label>
+                  <input
+                    type="number"
+                    id={`poidsBagage-${selectedPassengerIndex}`}
+                    className={styles.inputStyle}
+                    value={passengers[selectedPassengerIndex].poidsBagage}
+                    onChange={(event) =>
+                      handleInputChange(
+                        selectedPassengerIndex,
+                        "poidsBagage",
+                        event.target.value
+                      )
+                    }
+                  />
+                </div>
               </div>
-              <div className={styles.formGroup}>
-                <label className="block mb-2" htmlFor={`prenom-${selectedPassengerIndex}`}>
-                  <b>Prénom(s): </b>
-                </label>
-                <input
-                  type="text"
-                  id={`prenom-${selectedPassengerIndex}`}
-                  className={styles.inputStyle}
-                  value={passengers[selectedPassengerIndex].prenom}
-                  onChange={(event) => handleInputChange(selectedPassengerIndex, "prenom", event.target.value)}
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label className="block mb-2" htmlFor={`age-${selectedPassengerIndex}`}>
-                  <b>Age: </b>
-                </label>
-                <input
-                  type="number"
-                  id={`age-${selectedPassengerIndex}`}
-                  className={styles.inputStyle}
-                  value={passengers[selectedPassengerIndex].age}
-                  onChange={(event) => handleInputChange(selectedPassengerIndex, "age", event.target.value)}
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label className="block mb-2" htmlFor={`type-${selectedPassengerIndex}`}>
-                  <b>Type: </b>
-                </label>
-                <select
-                  id={`type-${selectedPassengerIndex}`}
-                  className={styles.inputStyle}
-                  value={passengers[selectedPassengerIndex].type}
-                  onChange={(event) => handleInputChange(selectedPassengerIndex, "type", event.target.value)}
-                >
-                  <option value="">Select Type</option>
-                  <option value="ADULTE">Adulte</option>
-                  <option value="ENFANT">Enfant</option>
-                  <option value="HANDICAPE">Handicapé</option>
-                </select>
-              </div>
-              <div className={styles.formGroup}>
-                <label className="block mb-2" htmlFor={`genre-${selectedPassengerIndex}`}>
-                  <b>Genre: </b>
-                </label>
-                <select
-                  id={`genre-${selectedPassengerIndex}`}
-                  className={styles.inputStyle}
-                  value={passengers[selectedPassengerIndex].genre}
-                  onChange={(event) => handleInputChange(selectedPassengerIndex, "genre", event.target.value)}
-                >
-                  <option value="">Select Genre</option>
-                  <option value="HOMME">Homme</option>
-                  <option value="FEMME">Femme</option>
-                </select>
-              </div>
-              <div className={styles.formGroup}>
-                <label className="block mb-2" htmlFor={`idNumber-${selectedPassengerIndex}`}>
-                  <b>Numéro d'identification: </b>
-                </label>
-                <input
-                  type="text"
-                  id={`idNumber-${selectedPassengerIndex}`}
-                  className={styles.inputStyle}
-                  value={passengers[selectedPassengerIndex].idNumber}
-                  onChange={(event) => handleInputChange(selectedPassengerIndex, "idNumber", event.target.value)}
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label className="block mb-2" htmlFor={`nbreBagage-${selectedPassengerIndex}`}>
-                  <b>Nombre de bagages: </b>
-                </label>
-                <input
-                  type="number"
-                  id={`nbreBagage-${selectedPassengerIndex}`}
-                  className={styles.inputStyle}
-                  value={passengers[selectedPassengerIndex].nbreBagage}
-                  onChange={(event) => handleInputChange(selectedPassengerIndex, "nbreBagage", event.target.value)}
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label className="block mb-2" htmlFor={`poidsBagage-${selectedPassengerIndex}`}>
-                  <b>Poids des bagages (kg): </b>
-                </label>
-                <input
-                  type="number"
-                  id={`poidsBagage-${selectedPassengerIndex}`}
-                  className={styles.inputStyle}
-                  value={passengers[selectedPassengerIndex].poidsBagage}
-                  onChange={(event) => handleInputChange(selectedPassengerIndex, "poidsBagage", event.target.value)}
-                />
-              </div>
-            </div>
-          )}
+            )}
 
             <button
               className="bg-green-500 text-white font-bold py-2 px-4 rounded my-2"

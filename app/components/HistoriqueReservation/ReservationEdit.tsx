@@ -108,9 +108,9 @@ const EditReservation = ({ passengers, reservationId, onSave, onCancel }) => {
                       onChange={(event) => handleInputChange(selectedPassenger, "type", event.target.value)}
                     >
                       <option value="">Sélectionner le type</option>
-                      <option value="Adulte">Adulte</option>
-                      <option value="Enfant">Enfant</option>
-                      <option value="Bébé">Handicapé</option>
+                      <option value="ADULTE">Adulte</option>
+                      <option value="ENFANT">Enfant</option>
+                      <option value="HANDICAPE">Handicapé</option>
                     </select>
                   </div>
                   <div className="flex flex-col space-y-2">

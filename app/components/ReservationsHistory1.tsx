@@ -283,9 +283,9 @@ const ReservationsHistory = () => {
                           }
                         >
                           <option value="">Select Type</option>
-                          <option value="Adulte">Adulte</option>
-                          <option value="Enfant">Enfant</option>
-                          <option value="Bébé">Handicapé</option>
+                          <option value="ADULTE">Adulte</option>
+                          <option value="ENFANT">Enfant</option>
+                          <option value="HANDICAPE">Handicapé</option>
                         </select>
                         <label htmlFor={`genre-${index}`}>
                           <b>Genre:</b>

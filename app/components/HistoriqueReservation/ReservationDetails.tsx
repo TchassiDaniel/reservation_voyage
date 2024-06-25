@@ -24,6 +24,7 @@ const ReservationDetails = ({ reservation, onClose }) => {
             return { ...passenger, bagages: bagData.data };
           })
         );
+        console.log(passengersWithBags);
         setPassengers(passengersWithBags);
       } catch (error) {
         console.error("Erreur lors de la récupération des détails:", error);
@@ -63,15 +64,30 @@ const ReservationDetails = ({ reservation, onClose }) => {
             <p>Prix total: {reservation.prixTotal}F CFA</p>
             <p>Statut: {reservation.statutReservation}</p>
             <h3 className="text-lg font-semibold mt-4">Passagers:</h3>
-            <ul>
-              {passengers.map((passenger, index) => (
-                <li key={index} className="mb-2">
-                  {passenger.nom} {passenger.prenom} ({passenger.type}, {passenger.genre}) - 
-                  Nombre de bagages: {passenger.bagages.nbreBagage}, 
-                  Poids total des bagages: {passenger.bagages.poids} kg
-                </li>
-              ))}
-            </ul>
+            <table className="min-w-full bg-gray-200 divide-y divide-gray-300">
+                <thead className="bg-gray-400">
+                    <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Nom</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Prénom</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Type</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Genre</th>
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">Nombre de bagages</th>
+                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">Poids total des bagages (kg)</th>
+                    </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-300">
+                    {passengers.map((passenger, index) => (
+                        <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
+                            <td className="px-6 py-4 whitespace-nowrap">{passenger.nom}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{passenger.prenom}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{passenger.type}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{passenger.genre}</td>
+                            <td className="px-6 py-4 text-right whitespace-nowrap">{passenger.bagages.nbreBagage}</td>
+                            <td className="px-6 py-4 text-right whitespace-nowrap">{passenger.bagages.poids}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
             {!editing && (
               <button
                 type="button"

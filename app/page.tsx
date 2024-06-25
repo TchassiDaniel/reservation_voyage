@@ -1,6 +1,6 @@
 import SearchForm from "./components/SearchForm";
 import OptionsBuy from "./components/optionsBuy";
-import BookingPage from "./components/BookingPage";
+import BookingPage from "./components/reservationForm/BookingPage"
 import Header from "@/app/components/Header";
 import React from "react";
 import styles from "@/app/components/booking.module.css";
