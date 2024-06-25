@@ -402,9 +402,10 @@ const BookingPage = () => {
         <p className="mb-2">
           <b>Nombre total de bagages :</b>{" "}
           {passengers.reduce(
-            (total, passenger) => total + passenger.nbreBagage,
-            0
-          )}
+  (total, passenger) => total + (Number(passenger.nbreBagage) || 0),
+  0
+      )}
+
         </p>
         <p className="mb-2">
           <b>Prix total du vol :</b> {flightPrice * passengers.length} F CFA
